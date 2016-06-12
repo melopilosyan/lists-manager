@@ -52,3 +52,8 @@ end
 
 gem 'omniauth-facebook'
 
+gem 'react-rails', github: 'reactjs/react-rails'
+gem 'sprockets-coffee-react'
+
+gem "js-routes", github: 'railsware/js-routes'
+
