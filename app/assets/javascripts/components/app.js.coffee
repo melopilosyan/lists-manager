@@ -2,12 +2,20 @@
 
 @App = React.createClass
   displayName: 'App'
-  getInitialState: ->
-    # hau: has authenticated user
-    userLoggedIn: @props.hau
+  getInitialState: -> 
+    user: {}
 
-  componentDidMount: ->
-    console.log('userLoggedIn', @state.userLoggedIn, 'Routes', MOR.root())
+  componentWillMount: ->
+    @getCurrentUserInfo()
+
+  getCurrentUserInfo: ->
+    $.ajax
+      url: MOR.user_info()
+      dataType: 'json'
+    .done (data) =>
+      console.log('ajax done', +new Date())
+      @setState
+        user: data
 
   welcomeMsg: ->
     <div className="jumbotron">
@@ -15,6 +23,12 @@
       <p>Authenticate via Facebook to get started.</p>
     </div>
 
+  greetings: ->
+    <div className="jumbotron">
+  		<h1>Hello { @state.user.name }</h1>
+    </div>
+
   render: ->
-    @welcomeMsg()
+    console.log('render', @state.user, +new Date())
+    @state.user.authenticated && @greetings() || @welcomeMsg()
 
