@@ -1,30 +1,21 @@
-== README
+## Meal Orders
 
 This README would normally document whatever steps are necessary to get the
 application up and running.
 
 Things you may want to cover:
 
-==== Ruby/Rails version
+#### Ruby/Rails version
 `ruby 2.3.1`
 `Rails 4.2.6`
 
-* System dependencies
+#### System dependencies
 
-* Configuration
+#### Configuration
 
-* Database creation
+#### Database stuff
 
-* Database initialization
+#### How to run the test suite
 
-* How to run the test suite
+#### Deployment instructions
 
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-
-
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
