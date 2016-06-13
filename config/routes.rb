@@ -2,9 +2,13 @@ Rails.application.routes.draw do
   root to: 'pages#index'
 
   get '/auth/:provider/callback', to: 'sessions#create'
+  get 'auth/failure', to: redirect('/')
   delete '/logout', to: 'sessions#destroy'
 
   get 'user_info', to: 'application#current_user_info'
+
+  resources :orders
+  resources :meals
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

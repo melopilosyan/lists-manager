@@ -1,4 +1,8 @@
 class User < ActiveRecord::Base
+  has_many :orders
+  has_many :meals
+
+  validates :uid, :provider, presence: true
 
   class << self
     def from_omniauth(auth_hash)

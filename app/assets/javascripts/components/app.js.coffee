@@ -1,34 +1,53 @@
 # @cjsx React.DOM
 
 @App = React.createClass
-  displayName: 'App'
   getInitialState: -> 
     user: {}
+    orders: []
 
   componentWillMount: ->
-    @getCurrentUserInfo()
+    window.__informLoggingIn__ = @informLoggingIn
+    @requestCurrentUserInfo()
+    @requestOrders()
 
-  getCurrentUserInfo: ->
-    $.ajax
-      url: MOR.user_info()
-      dataType: 'json'
-    .done (data) =>
-      console.log('ajax done', +new Date())
-      @setState
-        user: data
+  informLoggingIn: ->
+    @requestCurrentUserInfo()
 
-  welcomeMsg: ->
-    <div className="jumbotron">
-  		<h1>Welcome! My friend</h1>
-      <p>Authenticate via Facebook to get started.</p>
-    </div>
+  requestCurrentUserInfo: ->
+    log('App#requestCurrentUserInfo')
+    $.getJSON MOR.user_info_url(), (data) =>
+      log('App#requestCurrentUserInfo ajax done')
+      @setState user: data
 
-  greetings: ->
-    <div className="jumbotron">
-  		<h1>Hello { @state.user.name }</h1>
-    </div>
+  requestOrders: ->
+    log 'App#requestOrders'
+    $.getJSON MOR.orders_url(), (data) => @setState orders: data
+
+  onLogout: ->
+    log('App#onLogout')
+    @setState user: {}
+
+  onMakeOrder: ->
+    ReactDOM.render(<Modal />, document.getElementById('make-order-modal'))
+
+  pleaseSignIn: ->
+    <footer>Please login with FaceBook to be able to make orders</footer>
+
+  makeOrderBtn: ->
+    linkFor('Make order', 'btn btn-primary', @onMakeOrder)
+
+  welcome: ->
+    <blockquote>
+      <p>Currently there are no orders</p>
+      { @state.user.authenticated && @makeOrderBtn() || @pleaseSignIn() }
+    </blockquote>
 
   render: ->
-    console.log('render', @state.user, +new Date())
-    @state.user.authenticated && @greetings() || @welcomeMsg()
+    log('App#render')
+    <div>
+      <Navbar user={@state.user} onLogout={@onLogout} />
+      <div className='container'>
+        { @welcome() }
+      </div>
+    </div>
 

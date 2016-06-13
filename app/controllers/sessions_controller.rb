@@ -1,22 +1,19 @@
 class SessionsController < ApplicationController
   def create
+    puts params.to_yaml
     puts request.env['omniauth.auth'].to_yaml
+    json = { warning: 'There was an error while trying to authenticate you...' }
 		begin
 			@user = User.from_omniauth(request.env['omniauth.auth'])
 			session[:user_id] = @user.id
-			flash[:success] = "Welcome, #{@user.name}!"
-		rescue
-			flash[:warning] = "There was an error while trying to authenticate you..."
+			json = { success: "Welcome, #{@user.name}!" }
 		end
-		redirect_to root_path
+		render 'inform_loggingin', layout: false
   end
 
   def destroy
-		if current_user
-			session.delete(:user_id)
-			flash[:success] = 'See you!'
-		end
-		redirect_to root_path
+		current_user && session.delete(:user_id)
+		head :ok
 	end
 end
 
