@@ -13,7 +13,7 @@
     $.post MOR.meals(), {meal: {name: @state.value, order_id: @props.orderId}}
     .done (data) =>
       log 'AddMeal#onAddMeal ajax success', data
-      data.orders && (@props.updateOrders(data.orders[0]) || @props.updateMeals(data.orders[0].meals))
+      data.meal && @props.addMeal(data.meal)
     .fail (data) =>
       log 'AddMeal#onAddMeal ajax fail', data
 

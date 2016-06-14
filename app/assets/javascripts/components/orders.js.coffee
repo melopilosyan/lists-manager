@@ -28,7 +28,11 @@
             </thead>
             <tbody>
               { @props.orders.map (order) =>
-                  <Order user={ @props.user } order={ order } updateOrders={ @props.updateOrders } key={ 'order-' + order.id } /> }
+                  <Order
+                    user={ @props.user }
+                    order={ order }
+                    updateOrders={ @props.updateOrders }
+                    key={ 'order-' + order.id } /> }
             </tbody>
           </table>
         </div>

@@ -7,10 +7,12 @@
     close:      false
     action:     false
     buttonText: 'OK'
+    disableAction: false
 
   componentDidMount: ->
     $modal = $(ReactDOM.findDOMNode(@))
     $modal.on('hidden.bs.modal', @unMountComponent)
+    $modal.on('shown.bs.modal', => $modal.find('input:first').focus())
     $modal.modal('show')
 
   shouldComponentUpdate: (props) ->
@@ -25,7 +27,8 @@
     @props.action()
 
   showActionButton: ->
-    <button type="button" className="btn btn-primary" onClick={ @onActionClick } >
+    btnClass = 'btn btn-primary' + (@props.disableAction && ' disabled' || '')
+    <button type="button" className={ btnClass } onClick={ @onActionClick } >
       { @props.buttonText }
     </button>
 

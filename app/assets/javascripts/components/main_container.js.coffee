@@ -14,10 +14,11 @@
       @setState orders: data.orders, ordersRequested: true
 
   updateOrders: (order, add) ->
-    log 'updateOrders with', order, 'add', add
-    orders = add &&
-        [order].concat(@state.orders) ||
-        @state.orders.map( (ord) -> $.extend(true, {}, ord, order.id == ord.id && order || ord) )
+    if typeof order == 'object'
+      orders = add && [order].concat(@state.orders) ||
+                @state.orders.map (ord) -> order.id == ord.id && order || ord
+    else
+      orders = @state.orders.filter (o) -> o.id != order
     @setState orders: orders
 
   pleaseSignIn: ->

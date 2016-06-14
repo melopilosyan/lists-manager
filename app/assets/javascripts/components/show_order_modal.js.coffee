@@ -15,6 +15,7 @@
           <th>Name</th>
           <th>Added by</th>
           <th>Added on</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -22,17 +23,40 @@
           { @state.meals.map (meal) =>
              [ <td>{ meal.name }</td>
                <td>{ meal.creator.name }</td>
-               <td>{ meal.addedOn }</td> ] }
+               <td>{ meal.addedOn }</td>
+               <td>{ @showActionsFor(meal) }</td> ] }
         </tr>
       </tbody>
     </table>
 
-  allowToAddMeal: ->
-    @state.meals.filter((meal) => meal.creator.id is @props.user.id).length is 0
+  showActionsFor: (meal) ->
+    if meal.creator.id == @props.user.id
+      actionIconsFor meal, @updateMealEdit, @updateMealDelete
+
+  updateMealDelete: (id) ->
+    @updateMeals @state.meals.filter (m) -> m.id != id
+
+  updateMealEdit: (id, newValue) ->
+    @updateMeals @state.meals.map (m) ->
+      if m.id == id
+        meal = $.extend(true, {}, m)
+        meal.name = newValue
+        meal
+      else
+        m
+
+  addMeal: (meal) ->
+    @updateMeals [meal].concat @state.meals
 
   updateMeals: (meals) ->
     @setState meals: meals
+    order = $.extend true, {}, @props.order
+    order.meals = meals
+    @props.updateOrders order
     
+  allowToAddMeal: ->
+    @state.meals.filter((meal) => meal.creator.id is @props.user.id).length is 0
+
   render: ->
     order = @props.order
 
@@ -48,10 +72,7 @@
       <h2>
         <small>Meals</small>
         <div className='pull-right' >
-          { @allowToAddMeal() && <AddMeal
-                                    orderId={ @props.order.id }
-                                    updateOrders={ @props.updateOrders }
-                                    updateMeals={ @updateMeals } /> }
+          { @allowToAddMeal() && <AddMeal orderId={ @props.order.id } addMeal={ @addMeal } /> }
         </div>
       </h2>
       { @mealsTable() }
@@ -60,9 +81,5 @@
 
 # ShowOrderModal helper function
 @showOrderDetails = (order, user, updateOrders) ->
-  ReactDOM.render <ShowOrderModal
-                        order={ order }
-                        user={ user }
-                        updateOrders={ updateOrders } />
-  , document.getElementById('show-order-modal-container')
+  ReactDOM.render <ShowOrderModal order={ order } user={ user } updateOrders={ updateOrders } />, MO.modalContainer
 

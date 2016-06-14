@@ -8,6 +8,9 @@
   componentWillMount: ->
     window.__informLoggingIn__ = @onLoggingIn
     @requestUserInfo()
+    window.MO =
+      modalContainer: document.getElementById('modal-container'),
+      editModalContainer: document.getElementById('edit-modal-container')
 
   onLoggingIn: ->
     @requestUserInfo()

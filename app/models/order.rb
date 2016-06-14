@@ -13,6 +13,10 @@ class Order < ActiveRecord::Base
       filter = self.constants.select{ |c| self.const_get(c) == s }
       filter.empty? && '' || filter.first.to_s.capitalize
     end
+
+    def self.from_string status
+      self.const_get string.upcase rescue 1
+    end
   end
 
   def status_name

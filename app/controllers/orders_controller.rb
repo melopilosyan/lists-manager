@@ -9,7 +9,7 @@ class OrdersController < ApplicationController
 
   # POST /orders
   def create
-    order = current_user.orders.new(create_order_params)
+    order = current_user.orders.new(order_params)
 
     if order.save
       meal = params[:order][:meal].strip
@@ -21,8 +21,30 @@ class OrdersController < ApplicationController
     end
   end
 
+  # PATCH/PUT /orders/1
+  def update
+    json = {status: :nok, msg: 'Wrong params'}
+    if params.key? :order
+      if params[:order].key? :name
+        key = :name
+      elsif params[:order].key? :status
+        key = :status
+      end
+      order = Order.find(params[:id])
+      order.update_attribute(key, Order::Status.from_string(params[:order][key])) ?
+        json[:status] = :ok : json[:msg] = order.errors
+    end
+    render json: json
+  end
+
+  # DELETE /orders/1
+  def destroy
+    Order.find(params[:id]).delete
+    head :ok
+  end
+
  private
-  def create_order_params
+  def order_params
     params.require(:order).permit(:name)
   end
 end

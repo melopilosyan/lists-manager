@@ -19,6 +19,7 @@
 //= require react_ujs
 //= require_tree ./components
 
+
 window.log = function() {
   // Comment out next line to turn off all logs
   var args = Array.prototype.slice.call(arguments);
