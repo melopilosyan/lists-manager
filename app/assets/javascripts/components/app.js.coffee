@@ -3,51 +3,26 @@
 @App = React.createClass
   getInitialState: -> 
     user: {}
-    orders: []
+    userChecked: false
 
   componentWillMount: ->
-    window.__informLoggingIn__ = @informLoggingIn
-    @requestCurrentUserInfo()
-    @requestOrders()
+    window.__informLoggingIn__ = @onLoggingIn
+    @requestUserInfo()
 
-  informLoggingIn: ->
-    @requestCurrentUserInfo()
+  onLoggingIn: ->
+    @requestUserInfo()
 
-  requestCurrentUserInfo: ->
-    log('App#requestCurrentUserInfo')
-    $.getJSON MOR.user_info_url(), (data) =>
-      log('App#requestCurrentUserInfo ajax done')
-      @setState user: data
-
-  requestOrders: ->
-    log 'App#requestOrders'
-    $.getJSON MOR.orders_url(), (data) => @setState orders: data
+  requestUserInfo: ->
+    $.getJSON MOR.user_info_url(), (user) =>
+      log 'App#requestUserInfo', user
+      @setState user: user
 
   onLogout: ->
-    log('App#onLogout')
     @setState user: {}
 
-  onMakeOrder: ->
-    ReactDOM.render(<Modal />, document.getElementById('make-order-modal'))
-
-  pleaseSignIn: ->
-    <footer>Please login with FaceBook to be able to make orders</footer>
-
-  makeOrderBtn: ->
-    linkFor('Make order', 'btn btn-primary', @onMakeOrder)
-
-  welcome: ->
-    <blockquote>
-      <p>Currently there are no orders</p>
-      { @state.user.authenticated && @makeOrderBtn() || @pleaseSignIn() }
-    </blockquote>
-
   render: ->
-    log('App#render')
     <div>
-      <Navbar user={@state.user} onLogout={@onLogout} />
-      <div className='container'>
-        { @welcome() }
-      </div>
+      <Navbar user={ @state.user } onLogout={ @onLogout } />
+      <MainContainer user={ @state.user } />
     </div>
 

@@ -1,36 +1,37 @@
 # @cjsx React.DOM
 
 @Orders = React.createClass
-  render: ->
+  actionRow: ->
     <div className='row'>
-      <table className='table table-striped'>
-        <thead>
-          <tr>
-            <th>Restaurant Name</th>
-            <th>Creator</th>
-            <th>Status</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>O1</td>
-            <td>C1</td>
-            <td>S1</td>
-            <td></td>
-          </tr>
-          <tr>
-            <td>O2</td>
-            <td>C2</td>
-            <td>S2</td>
-            <td></td>
-          </tr>
-          <tr>
-            <td>O3</td>
-            <td>C3</td>
-            <td>S3</td>
-            <td></td>
-          </tr>
-        </tbody>
-      </table>
+      <div className='col-md-12'>
+        <div className=' pull-right'>
+          { makeOrderButton(@props.onMakeOrder) }
+        </div>
+      </div>
     </div>
+
+  render: ->
+    <div>
+      { @props.user.authenticated && @actionRow() }
+      <div className='row'>
+        <div className='col-md-12'>
+          <table className='table table-hover'>
+            <thead>
+              <tr>
+                <th width="30">#</th>
+                <th>Restaurant Name</th>
+                <th>Status</th>
+                <th>Creator</th>
+                <th>Made on</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              { @props.orders.map (order) =>
+                  <Order user={ @props.user } order={ order } key={ 'order-' + order.id } /> }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+

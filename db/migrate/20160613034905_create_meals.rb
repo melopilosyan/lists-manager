@@ -7,6 +7,5 @@ class CreateMeals < ActiveRecord::Migration
 
       t.timestamps null: false
     end
-		add_index :meals, [:user, :order], unique: true
   end
 end

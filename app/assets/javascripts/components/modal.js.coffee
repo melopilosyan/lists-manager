@@ -2,38 +2,51 @@
 
 @Modal = React.createClass
   getDefaultProps: ->
-    label: 'default-label'
-    title: 'Default Title'
-    saveText: 'Save'
-    renderTo: 'element-id'
+    id:         'modal'
+    title:      'Default Title'
+    close:      false
+    action:     false
+    buttonText: 'OK'
 
   componentDidMount: ->
-    log('Modal#componentDidMount')
     $modal = $(ReactDOM.findDOMNode(@))
     $modal.on('hidden.bs.modal', @unMountComponent)
-    setTimeout ->
-        $modal.modal('show')
-      50
+    $modal.modal('show')
+
+  shouldComponentUpdate: (props) ->
+    props.close && $(ReactDOM.findDOMNode(@)).find('.close').click()
+    !props.close
 
   unMountComponent: ->
     ReactDOM.unmountComponentAtNode(ReactDOM.findDOMNode(@).parentNode)
 
+  onActionClick: (e) ->
+    e.preventDefault()
+    @props.action()
+
+  showActionButton: ->
+    <button type="button" className="btn btn-primary" onClick={ @onActionClick } >
+      { @props.buttonText }
+    </button>
+
   render: ->
-    <div className="modal fade" id={ @props.renderTo + '-itself' } tabindex="-1" role="dialog" aria-labelledby={ @props.label } >
-      <div className="modal-dialog" role="document">
-        <div className="modal-content">
-          <div className="modal-header">
-            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+    label = @props.id + '-m-label'
+
+    <div className="modal fade" id={ @props.id + '-itself' } tabindex="-1" role="dialog" aria-labelledby={ label } >
+      <div className="modal-dialog" role="document" >
+        <div className="modal-content" >
+          <div className="modal-header" >
+            <button type="button" className="close" data-dismiss="modal" aria-label="Close" >
               <span aria-hidden="true">&times;</span>
             </button>
-            <h4 className="modal-title" id={ @props.label } >{ @props.title }</h4>
+            <h4 className="modal-title" id={ label }>{ @props.title }</h4>
           </div>
-          <div className="modal-body">
+          <div className="modal-body" >
             { @props.children }
           </div>
-          <div className="modal-footer">
+          <div className="modal-footer" >
             <button type="button" className="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="button" className="btn btn-primary">{ @props.saveText }</button>
+            { @props.action && @showActionButton() }
           </div>
         </div>
       </div>
