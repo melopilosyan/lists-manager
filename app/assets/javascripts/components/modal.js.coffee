@@ -39,7 +39,9 @@
             <button type="button" className="close" data-dismiss="modal" aria-label="Close" >
               <span aria-hidden="true">&times;</span>
             </button>
-            <h4 className="modal-title" id={ label }>{ @props.title }</h4>
+            <h1 className="modal-title" id={ label }>
+              <small>{ @props.title }</small>
+            </h1>
           </div>
           <div className="modal-body" >
             { @props.children }

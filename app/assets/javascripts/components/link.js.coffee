@@ -6,8 +6,8 @@
     @props.data.onClick(e)
 
   render: ->
-    <a href='#' className={@props.data.className} onClick={@onClick} >
-      {@props.data.text}
+    <a href='#' className={ @props.data.className } onClick={ @onClick } >
+      { @props.data.text }
     </a>
 
 

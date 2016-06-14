@@ -5,7 +5,7 @@
     <div className='row'>
       <div className='col-md-12'>
         <div className=' pull-right'>
-          { makeOrderButton(@props.onMakeOrder) }
+          { makeOrderButton(@props.updateOrders) }
         </div>
       </div>
     </div>
@@ -28,7 +28,7 @@
             </thead>
             <tbody>
               { @props.orders.map (order) =>
-                  <Order user={ @props.user } order={ order } key={ 'order-' + order.id } /> }
+                  <Order user={ @props.user } order={ order } updateOrders={ @props.updateOrders } key={ 'order-' + order.id } /> }
             </tbody>
           </table>
         </div>

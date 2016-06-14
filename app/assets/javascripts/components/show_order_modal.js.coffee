@@ -1,11 +1,14 @@
 # @cjsx React.DOM
 
 @ShowOrderModal = React.createClass
+  getInitialState: ->
+    meals: @props.order.meals
+
   row: (dt, dd) ->
     [ <dt>{ dt }:</dt>
       <dd>{ dd }</dd> ]
 
-  mealRow: (meals) ->
+  mealsTable: () ->
     <table className='table table-striped' >
       <thead>
         <tr>
@@ -16,7 +19,7 @@
       </thead>
       <tbody>
         <tr>
-          { meals.map (meal) =>
+          { @state.meals.map (meal) =>
              [ <td>{ meal.name }</td>
                <td>{ meal.creator.name }</td>
                <td>{ meal.addedOn }</td> ] }
@@ -24,10 +27,16 @@
       </tbody>
     </table>
 
+  allowToAddMeal: ->
+    @state.meals.filter((meal) => meal.creator.id is @props.user.id).length is 0
+
+  updateMeals: (meals) ->
+    @setState meals: meals
+    
   render: ->
     order = @props.order
 
-    <Modal id='show' title='Order details'>
+    <Modal id='show-order' title='Order details' >
       <dl className='dl-horizontal' >
         {[
           @row('Made against', order.name)
@@ -36,12 +45,24 @@
           @row('Made on', order.madeOn)
         ]}
       </dl>
-      <h1><small>Meals</small></h1>
-      { @mealRow order.meals }
+      <h2>
+        <small>Meals</small>
+        <div className='pull-right' >
+          { @allowToAddMeal() && <AddMeal
+                                    orderId={ @props.order.id }
+                                    updateOrders={ @props.updateOrders }
+                                    updateMeals={ @updateMeals } /> }
+        </div>
+      </h2>
+      { @mealsTable() }
     </Modal>
 
 
 # ShowOrderModal helper function
-@showOrderDetails = () ->
-  ReactDOM.render <ShowOrderModal order={ @ } />, document.getElementById('show-order-modal-container')
+@showOrderDetails = (order, user, updateOrders) ->
+  ReactDOM.render <ShowOrderModal
+                        order={ order }
+                        user={ user }
+                        updateOrders={ updateOrders } />
+  , document.getElementById('show-order-modal-container')
 

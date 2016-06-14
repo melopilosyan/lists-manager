@@ -15,7 +15,7 @@
     $.post MOR.orders(), {order: {name: @state.orderValue, meal: @state.mealValue}}
     .done (data) =>
       log 'MakeOrderModal#makeOrder ajax success', data
-      data.orders && @props.onMakeOrder(@props.update, data.orders[0])
+      data.orders && @props.updateOrders(data.orders[0], !@props.update)
       @setState close: true
     .fail (data) =>
       log 'MakeOrderModal#makeOrder ajax fail', data
@@ -39,10 +39,10 @@
     </Modal>
 
 
-renderOrdersModal = (onMakeOrder, u, id, v) ->
-  ReactDOM.render <MakeOrderModal update={ u } orderID={ id } orderValue={ v } onMakeOrder={ onMakeOrder }/>, document.getElementById('make-order-modal-container')
+renderOrdersModal = (updateOrders, u, id, v) ->
+  ReactDOM.render <MakeOrderModal update={ u } orderID={ id } orderValue={ v } updateOrders={ updateOrders }/>, document.getElementById('make-order-modal-container')
 
 # MakeOrderModal helper function
-@makeOrderButton = (onMakeOrder, cls, update, id, currentValue) ->
-  linkFor 'Make order', cls || 'btn btn-primary btn-xs', renderOrdersModal.bind(null, onMakeOrder, update, id, currentValue || '')
+@makeOrderButton = (updateOrders, cls, update, id, currentValue) ->
+  linkFor 'Make order', cls || 'btn btn-primary btn-xs', renderOrdersModal.bind(null, updateOrders, update, id, currentValue || '')
 

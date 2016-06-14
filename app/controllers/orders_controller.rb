@@ -7,14 +7,13 @@ class OrdersController < ApplicationController
     render 'jsons/orders'
   end
 
-  # POST /items
+  # POST /orders
   def create
     order = current_user.orders.new(create_order_params)
 
     if order.save
       meal = params[:order][:meal].strip
       meal.empty? || order.meals.create(name: meal, user_id: current_user.id)
-      order.save
       @orders = [order]
       render 'jsons/orders'
     else
