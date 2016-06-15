@@ -19,13 +19,13 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
           { @state.meals.map (meal) =>
-             [ <td>{ meal.name }</td>
-               <td>{ meal.creator.name }</td>
-               <td>{ meal.addedOn }</td>
-               <td>{ @showActionsFor(meal) }</td> ] }
-        </tr>
+              <tr key={ 'meal-' + meal.id } >
+                <td>{ meal.name }</td>
+                <td>{ meal.creator.name }</td>
+                <td>{ meal.addedOn }</td>
+                <td>{ @showActionsFor(meal) }</td>
+              </tr> }
       </tbody>
     </table>
 

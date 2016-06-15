@@ -10,12 +10,19 @@ class Order < ActiveRecord::Base
     FINALIZED = 3
 
     def self.to_s s
-      filter = self.constants.select{ |c| self.const_get(c) == s }
-      filter.empty? && '' || filter.first.to_s.capitalize
+      case s
+        when DELIVERED then 'Delivered'
+        when FINALIZED then 'Finalized'
+        else 'Ordered'
+      end
     end
 
     def self.from_string status
-      self.const_get string.upcase rescue 1
+      case status
+        when 'Delivered' then DELIVERED
+        when 'Finalized' then FINALIZED
+        else ORDERED
+      end
     end
   end
 

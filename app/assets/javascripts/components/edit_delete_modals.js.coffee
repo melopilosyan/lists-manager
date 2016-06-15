@@ -35,7 +35,7 @@ renderEditModal = (type, item, editUpdate) ->
   ReactDOM.render <EditModal type={ type } item={ item } onUpdate={ editUpdate } />, MO.editModalContainer
 
 editIconFor = (type, item, editUpdate) ->
-  editIconLink type + '-' + item.id + '-edit', renderEditModal.bind(null, type, item, editUpdate)
+  editIconLink renderEditModal.bind(null, type, item, editUpdate)
 
 
 # DeleteModal class
@@ -63,14 +63,16 @@ renderDeleteModal = (type, item, deleteUpdate) ->
   ReactDOM.render <DeleteModal type={ type } item={ item } onUpdate={ deleteUpdate } />, MO.editModalContainer
 
 deleteIconFor = (type, item, deleteUpdate) ->
-  deleteIconLink type + '-' + item.id + '-delete', renderDeleteModal.bind(null, type, item, deleteUpdate)
+  deleteIconLink renderDeleteModal.bind(null, type, item, deleteUpdate)
 
 
 
 # Show Edit and Delete icons
 @actionIconsFor = (item, editUpdate, deleteUpdate) ->
   type = item.meals && 'order' || 'meal'
-  [ editIconFor type, item, editUpdate
-    <i key={ type + '-' + item.id + '-space'} className='space'></i>
-    deleteIconFor(type, item, deleteUpdate) ]
+  <span>
+    { editIconFor type, item, editUpdate }
+    <i className='space'></i>
+    { deleteIconFor(type, item, deleteUpdate) }
+  </span>
 

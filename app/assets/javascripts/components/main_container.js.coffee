@@ -3,15 +3,16 @@
 @MainContainer = React.createClass
   getInitialState: ->
     orders: []
-    ordersRequested: false
+    loadingData: true
 
   componentWillMount: ->
     @requestOrders()
 
   requestOrders: ->
+    @setState loadingData: true
     $.getJSON MOR.orders_url(), (data) =>
       log 'MainContainer#requestOrders', data
-      @setState orders: data.orders, ordersRequested: true
+      @setState orders: data.orders, loadingData: false
 
   updateOrders: (order, add) ->
     if typeof order == 'object'
@@ -31,10 +32,10 @@
     </blockquote>
 
   showOrders: ->
-    <Orders orders={ @state.orders } user={ @props.user } updateOrders={ @updateOrders } />
+    <Orders orders={ @state.orders } user={ @props.user } updateOrders={ @updateOrders } refresh={ @requestOrders } />
 
   render: ->
     <div className='container'>
-      { !@state.ordersRequested && <Loader /> || (@state.orders.length && @showOrders() || @showWelcome()) }
+      { if @state.loadingData then <Loader /> else if @state.orders.length then @showOrders() else @showWelcome() }
     </div>
 

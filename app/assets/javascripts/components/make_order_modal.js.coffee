@@ -39,5 +39,5 @@ renderOrdersModal = (updateOrders) ->
 
 # MakeOrderModal helper function
 @makeOrderButton = (updateOrders, cls) ->
-  linkFor 'Make order', cls || 'btn btn-primary btn-xs', renderOrdersModal.bind(null, updateOrders)
+  linkFor 'Make order', cls, renderOrdersModal.bind(null, updateOrders)
 

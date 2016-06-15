@@ -2,10 +2,14 @@
 
 @Orders = React.createClass
   actionRow: ->
+    btnsCls = 'btn btn-primary btn-xs'
     <div className='row'>
       <div className='col-md-12'>
+        <div className=' pull-left'>
+          { linkFor 'Refresh', btnsCls, @props.refresh }
+        </div>
         <div className=' pull-right'>
-          { makeOrderButton(@props.updateOrders) }
+          { makeOrderButton(@props.updateOrders, btnsCls) }
         </div>
       </div>
     </div>
@@ -20,9 +24,9 @@
               <tr>
                 <th width="30">#</th>
                 <th>Restaurant Name</th>
-                <th>Status</th>
                 <th>Creator</th>
                 <th>Made on</th>
+                <th>Status</th>
                 <th></th>
               </tr>
             </thead>

@@ -26,13 +26,12 @@ class OrdersController < ApplicationController
     json = {status: :nok, msg: 'Wrong params'}
     if params.key? :order
       if params[:order].key? :name
-        key = :name
+        pair = {name: params[:order][:name]}
       elsif params[:order].key? :status
-        key = :status
+        pair = {status: Order::Status.from_string(params[:order][:status])}
       end
       order = Order.find(params[:id])
-      order.update_attribute(key, Order::Status.from_string(params[:order][key])) ?
-        json[:status] = :ok : json[:msg] = order.errors
+      order && order.update(pair) ? json[:status] = :ok : json[:msg] = order.errors
     end
     render json: json
   end

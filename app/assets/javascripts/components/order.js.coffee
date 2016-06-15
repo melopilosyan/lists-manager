@@ -17,19 +17,14 @@
 
   render: ->
     order = @props.order
+    couldBeChanged = @props.user.id == order.creator.id && order.status != MO.Order.Statuses.Finalized
 
     <tr>
       <th>{ order.id }</th>
-      <td>{
-        @props.user.authenticated &&
-          linkFor(order.name, showOrderDetails.bind(null, order, @props.user, @props.updateOrders)) ||
-          order.name
-      }</td>
-      <td>{
-        @props.user.authenticated && changeStatusModalLink(order, @updateOrderChange) || order.status
-      }</td>
+      <td>{ linkFor(order.name, showOrderDetails.bind(null, order, @props.user, @props.updateOrders)) }</td>
       <td>{ order.creator.name }</td>
       <td>{ order.madeOn }</td>
-      <td>{ @showActionsFor(order) }</td>
+      <td>{ if couldBeChanged then changeStatusModalLink(order, @updateOrderChange) else order.status }</td>
+      <td width="60" className="text-center">{ @showActionsFor(order) if couldBeChanged }</td>
     </tr>
 

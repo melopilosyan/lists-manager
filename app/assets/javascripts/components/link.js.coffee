@@ -22,12 +22,12 @@
   <Link cls={ cls } text={ text } onClick={ onClick } />
 
 
-@iconLink = (key, onClick, cls) ->
-  <Link key={ key } cls={ cls } onClick={ onClick } />
+@iconLink = (onClick, cls) ->
+  <Link cls={ cls } onClick={ onClick } />
 
-@editIconLink = (key, onClick) ->
-  iconLink key, onClick, 'fa fa-pencil-square-o'
+@editIconLink = (onClick) ->
+  iconLink onClick, 'fa fa-pencil-square-o'
 
-@deleteIconLink = (key, onClick) ->
-  iconLink key, onClick, 'fa fa-times'
+@deleteIconLink = (onClick) ->
+  iconLink onClick, 'fa fa-times'
 

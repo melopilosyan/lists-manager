@@ -8,9 +8,16 @@
   componentWillMount: ->
     window.__informLoggingIn__ = @onLoggingIn
     @requestUserInfo()
+
+    # Store some global values
     window.MO =
       modalContainer: document.getElementById('modal-container'),
       editModalContainer: document.getElementById('edit-modal-container')
+      Order: order =
+        Statuses: statuses =
+          Ordered: 'Ordered'
+          Delivered: 'Delivered'
+          Finalized: 'Finalized'
 
   onLoggingIn: ->
     @requestUserInfo()
