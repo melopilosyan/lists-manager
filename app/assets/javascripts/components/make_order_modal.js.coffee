@@ -12,7 +12,6 @@
   makeOrder: ->
     $.post MOR.orders(), {order: {name: @state.orderValue, meal: @state.mealValue}}
     .done (data) =>
-      log 'MakeOrderModal#makeOrder ajax success', data
       if data.orders
         @setState close: true
         @props.updateOrders(data.orders[0], true)

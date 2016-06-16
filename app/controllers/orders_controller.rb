@@ -3,7 +3,14 @@ class OrdersController < ApplicationController
 
   # GET /orders
   def index
-    @orders = Order.includes(:meals, :user).order 'created_at desc'
+    @orders = case params[:type]
+                when 'active'
+                  Order.active
+                when'archived'
+                  Order.archived
+                else
+                []
+              end
     render 'jsons/orders'
   end
 
@@ -38,7 +45,7 @@ class OrdersController < ApplicationController
 
   # DELETE /orders/1
   def destroy
-    Order.find(params[:id]).delete
+    Order.find_by(id: params[:id]).delete rescue 1
     head :ok
   end
 
@@ -47,3 +54,4 @@ class OrdersController < ApplicationController
     params.require(:order).permit(:name)
   end
 end
+

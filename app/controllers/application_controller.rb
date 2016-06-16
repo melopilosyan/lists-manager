@@ -7,12 +7,7 @@ class ApplicationController < ActionController::Base
 
   def current_user_info
     user_info = { authenticated: false }
-    current_user && (user_info = {
-      id: current_user.id,
-      name: current_user.name,
-      image_url: current_user.image_url,
-      authenticated: true
-    })
+    current_user && (user_info = current_user.info)
     render json: user_info
   end
 

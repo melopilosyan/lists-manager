@@ -30,8 +30,8 @@
     </table>
 
   showActionsFor: (meal) ->
-    if meal.creator.id == @props.user.id
-      actionIconsFor meal, @updateMealEdit, @updateMealDelete
+    if MO.Statuses.isOrdered(@props.order) && meal.allowActions
+      actionIconsFor meal, @updateMealDelete, @updateMealEdit
 
   updateMealDelete: (id) ->
     @updateMeals @state.meals.filter (m) -> m.id != id
@@ -53,26 +53,26 @@
     order = $.extend true, {}, @props.order
     order.meals = meals
     @props.updateOrders order
-    
-  allowToAddMeal: ->
-    @state.meals.filter((meal) => meal.creator.id is @props.user.id).length is 0
 
+  
   render: ->
     order = @props.order
+    addMeal = MO.Statuses.isOrdered(order) && @state.meals.filter((meal) -> meal.allowActions).length is 0
 
     <Modal id='show-order' title='Order details' >
       <dl className='dl-horizontal' >
         {[
           @row('Made against', order.name)
           @row('Made by', order.creator.name)
-          @row('Status', order.status)
           @row('Made on', order.madeOn)
+          <br key='br' />
+          @row('Status', order.status)
         ]}
       </dl>
       <h2>
         <small>Meals</small>
         <div className='pull-right' >
-          { @allowToAddMeal() && <AddMeal orderId={ @props.order.id } addMeal={ @addMeal } /> }
+          { addMeal && <AddMeal orderId={ @props.order.id } addMeal={ @addMeal } /> }
         </div>
       </h2>
       { @mealsTable() }
@@ -81,5 +81,5 @@
 
 # ShowOrderModal helper function
 @showOrderDetails = (order, user, updateOrders) ->
-  ReactDOM.render <ShowOrderModal order={ order } user={ user } updateOrders={ updateOrders } />, MO.modalContainer
+  ReactDOM.render <ShowOrderModal order={ order } updateOrders={ updateOrders } />, MO.modalContainer
 

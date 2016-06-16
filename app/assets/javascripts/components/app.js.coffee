@@ -4,6 +4,7 @@
   getInitialState: -> 
     user: {}
     userChecked: false
+    reloadArchiveds: false
 
   componentWillMount: ->
     window.__informLoggingIn__ = @onLoggingIn
@@ -13,26 +14,36 @@
     window.MO =
       modalContainer: document.getElementById('modal-container'),
       editModalContainer: document.getElementById('edit-modal-container')
-      Order: order =
-        Statuses: statuses =
-          Ordered: 'Ordered'
-          Delivered: 'Delivered'
-          Finalized: 'Finalized'
+      Statuses: statuses =
+        Ordered: 'Ordered'
+        Delivered: 'Delivered'
+        Finalized: 'Finalized'
+        isOrdered: (order) ->
+          order.status == @Ordered
 
   onLoggingIn: ->
     @requestUserInfo()
 
-  requestUserInfo: ->
-    $.getJSON MOR.user_info_url(), (user) =>
-      log 'App#requestUserInfo', user
-      @setState user: user
-
   onLogout: ->
     @setState user: {}
+
+  reloadArchiveds: (reload) ->
+    @setState reloadArchiveds: reload
+
+  requestUserInfo: ->
+    $.getJSON MOR.user_info_url(), (user) =>
+      @setState user: user
 
   render: ->
     <div>
       <Navbar user={ @state.user } onLogout={ @onLogout } />
-      <MainContainer user={ @state.user } />
+      <div className='container'>
+        <OrdersContainer authenticated={ @state.user.authenticated } onHasFinalized={ @reloadArchiveds }/>
+        <OrdersContainer
+          type='archived'
+          reload={ @state.reloadArchiveds }
+          informReloaded={ @reloadArchiveds }
+          authenticated={ @state.user.authenticated } />
+      </div>
     </div>
 

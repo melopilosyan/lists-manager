@@ -1,45 +1,31 @@
 # @cjsx React.DOM
 
 @Orders = React.createClass
-  actionRow: ->
-    btnsCls = 'btn btn-primary btn-xs'
-    <div className='row'>
-      <div className='col-md-12'>
-        <div className=' pull-left'>
-          { linkFor 'Refresh', btnsCls, @props.refresh }
-        </div>
-        <div className=' pull-right'>
-          { makeOrderButton(@props.updateOrders, btnsCls) }
-        </div>
-      </div>
-    </div>
+  head: ->
+    if @props.type == 'active'
+      <thead>
+        <tr>
+          <th width='40' className='text-center'>#</th>
+          <th>Restaurant Name</th>
+          <th>Creator</th>
+          <th>Made on</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </thead>
 
   render: ->
-    <div>
-      { @props.user.authenticated && @actionRow() }
-      <div className='row'>
-        <div className='col-md-12'>
-          <table className='table table-hover'>
-            <thead>
-              <tr>
-                <th width="30">#</th>
-                <th>Restaurant Name</th>
-                <th>Creator</th>
-                <th>Made on</th>
-                <th>Status</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              { @props.orders.map (order) =>
-                  <Order
-                    user={ @props.user }
-                    order={ order }
-                    updateOrders={ @props.updateOrders }
-                    key={ 'order-' + order.id } /> }
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
+    <table className='table table-hover'>
+      { @head() }
+      <tbody>
+        { @props.orders.map (order, index) =>
+            <Order
+              index={ index + 1 }
+              order={ order }
+              authenticated={ @props.authenticated }
+              allowEdit={ @props.allowEdit }
+              updateOrders={ @props.updateOrders }
+              key={ 'order-' + order.id } /> }
+      </tbody>
+    </table>
 

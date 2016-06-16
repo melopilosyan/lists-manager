@@ -1,9 +1,9 @@
 Rails.application.routes.draw do
   root to: 'home#index'
 
-  get '/auth/:provider/callback', to: 'sessions#create'
+  get 'auth/:provider/callback', to: 'sessions#create'
   get 'auth/failure', to: redirect('/')
-  delete '/logout', to: 'sessions#destroy'
+  delete 'logout', to: 'sessions#destroy'
 
   get 'user_info', to: 'application#current_user_info'
 

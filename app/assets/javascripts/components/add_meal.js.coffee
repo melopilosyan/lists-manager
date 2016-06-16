@@ -12,7 +12,6 @@
     return if @state.value is ''
     $.post MOR.meals(), {meal: {name: @state.value, order_id: @props.orderId}}
     .done (data) =>
-      log 'AddMeal#onAddMeal ajax success', data
       data.meal && @props.addMeal(data.meal)
     .fail (data) =>
       log 'AddMeal#onAddMeal ajax fail', data

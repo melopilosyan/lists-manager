@@ -19,7 +19,6 @@ EditModal = React.createClass
       type: 'PUT'
       data: data
       success: (data) =>
-        log 'EditModal#onEdit ajax succeeded', data
         if data.status == 'ok'
           @setState close: true
           @props.onUpdate id, newValue
@@ -68,11 +67,12 @@ deleteIconFor = (type, item, deleteUpdate) ->
 
 
 # Show Edit and Delete icons
-@actionIconsFor = (item, editUpdate, deleteUpdate) ->
-  type = item.meals && 'order' || 'meal'
-  <span>
-    { editIconFor type, item, editUpdate }
-    <i className='space'></i>
-    { deleteIconFor(type, item, deleteUpdate) }
-  </span>
+@actionIconsFor = (item, deleteUpdate, editUpdate) ->
+  if item.allowActions
+    type = item.meals && 'order' || 'meal'
+    <span>
+      { editUpdate && editIconFor type, item, editUpdate }
+      <i className='space'></i>
+      { deleteIconFor(type, item, deleteUpdate) }
+    </span>
 

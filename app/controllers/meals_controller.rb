@@ -1,4 +1,5 @@
 class MealsController < ApplicationController
+  before_action :authenticate_user!
 
   # POST /meals
   def create
@@ -23,7 +24,7 @@ class MealsController < ApplicationController
 
   # DELETE /meals/1
   def destroy
-    Meal.find(params[:id]).delete
+    Meal.find_by(id: params[:id]).delete rescue 1
     head :ok
   end
 
