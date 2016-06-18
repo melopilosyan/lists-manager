@@ -12,7 +12,7 @@
 
     <tr>
       <th className='text-center'>{ @props.index }</th>
-      <td>{ linkFor(order.name, showOrderDetails.bind(null, order, @props.user, @props.updateOrders)) }</td>
+      <td>{ linkFor(order.name, showOrderDetails.bind(null, order, @props.allowEdit, @props.updateOrders)) }</td>
       <td>{ order.creator.name }</td>
       <td>{ order.madeOn }</td>
       <td>{ if allowChangeStatus then changeStatusModalLink(order, @updateOrder) else order.status }</td>

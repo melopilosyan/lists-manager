@@ -12,8 +12,7 @@
     @requestOrders()
 
   componentWillReceiveProps: (props) ->
-    log 'self auth:', @props.authenticated, 'received outh:', props.authenticated
-    if !@props.authenticated && props.authenticated
+    if props.reload || !@props.authenticated && props.authenticated
       @requestOrders()
 
   requestOrders: ->

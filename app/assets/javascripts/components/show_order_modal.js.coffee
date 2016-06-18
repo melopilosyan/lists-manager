@@ -30,7 +30,7 @@
     </table>
 
   showActionsFor: (meal) ->
-    if MO.Statuses.isOrdered(@props.order) && meal.allowActions
+    if @props.allowEdit && MO.Statuses.isOrdered(@props.order) && meal.allowActions
       actionIconsFor meal, @updateMealDelete, @updateMealEdit
 
   updateMealDelete: (id) ->
@@ -57,7 +57,8 @@
   
   render: ->
     order = @props.order
-    addMeal = MO.Statuses.isOrdered(order) && @state.meals.filter((meal) -> meal.allowActions).length is 0
+    addMeal = @props.allowEdit && MO.Statuses.isOrdered(order) &&
+                  @state.meals.filter((meal) -> meal.allowActions).length is 0
 
     <Modal id='show-order' title='Order details' >
       <dl className='dl-horizontal' >
@@ -80,6 +81,6 @@
 
 
 # ShowOrderModal helper function
-@showOrderDetails = (order, user, updateOrders) ->
-  ReactDOM.render <ShowOrderModal order={ order } updateOrders={ updateOrders } />, MO.modalContainer
+@showOrderDetails = (order, allowEdit, updateOrders) ->
+  ReactDOM.render <ShowOrderModal order={ order } allowEdit={ allowEdit } updateOrders={ updateOrders } />, MO.modalContainer
 
