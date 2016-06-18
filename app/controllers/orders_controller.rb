@@ -19,7 +19,7 @@ class OrdersController < ApplicationController
     order = current_user.orders.new(order_params)
 
     if order.save
-      meal = params[:order][:meal].strip
+      meal = params[:order].fetch :meal, ''
       meal.empty? || order.meals.create(name: meal, user_id: current_user.id)
       @orders = [order]
       render 'jsons/orders'
@@ -37,7 +37,7 @@ class OrdersController < ApplicationController
       elsif params[:order].key? :status
         pair = {status: Order::Status.from_string(params[:order][:status])}
       end
-      order = Order.find(params[:id])
+      order = Order.find_by(id: params[:id])
       order && order.update(pair) ? json[:status] = :ok : json[:msg] = order.errors
     end
     render json: json

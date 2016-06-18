@@ -3,12 +3,15 @@ class MealsController < ApplicationController
 
   # POST /meals
   def create
-    @meal = current_user.meals.new(meal_params)
+    meal = meal_params
+    current_user.meals.find_by_order_id(meal[:order_id]) &&
+      render(json: {status: :nok, msg: 'Already added a meal to this order' }) && return
+    @meal = current_user.meals.new(meal)
 
     if @meal.save
       render 'jsons/meal'
     else
-      render json: { status: :nok, msg: meal.errors }
+      render json: { status: :nok, msg: @meal.errors }
     end
   end
 

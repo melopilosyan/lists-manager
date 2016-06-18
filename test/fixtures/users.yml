@@ -1,0 +1,11 @@
+jack:
+  id: 1
+  uid: '0001'
+  name: 'Jack Daniels'
+  image_url: 'jack/image/url'
+
+joe:
+  uid: '0002'
+  name: 'Joe Black'
+  image_url: 'joe/image/url'
+
