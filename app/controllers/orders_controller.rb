@@ -20,7 +20,7 @@ class OrdersController < ApplicationController
     order.save || render_nok(order.errors.full_massages.first) && return
 
     meal = params[:order].fetch :meal, ''
-    meal.empty? || order.meals.create(name: meal, user_id: current_user.id) && return
+    meal.empty? || order.meals.create(name: meal, user_id: current_user.id)
     @orders = [order]
     render 'jsons/orders'
   end

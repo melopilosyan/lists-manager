@@ -24,7 +24,7 @@
 
   onActionClick: (e) ->
     e.preventDefault()
-    @props.action()
+    @props.disableAction || @props.action()
 
   showActionButton: ->
     btnClass = 'btn btn-primary' + (@props.disableAction && ' disabled' || '')

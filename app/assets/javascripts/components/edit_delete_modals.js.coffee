@@ -5,8 +5,13 @@ EditModal = React.createClass
     close: false
     value: @props.item.name
 
-  onValueChange: (val) ->
+  onValueChange: (val, enterPressed) ->
     @setState value: val
+    enterPressed && @allowEdit() && @onEdit()
+
+
+  allowEdit: ->
+    @state.value != ''
 
   onEdit: ->
     data = {}
@@ -28,7 +33,7 @@ EditModal = React.createClass
   render: ->
     title = 'Edit ' + @props.type
     <Modal id='edit-modal' close={ @state.close } title={ title }
-           action={ @onEdit } buttonText='Update' disableAction={ @state.value == '' } >
+           action={ @onEdit } buttonText='Update' disableAction={ !@allowEdit() } >
       {  showError(@state.error) if @state.error }
       <TextControl id='text-edit' label={ title } value={ @props.item.name } onChange={ @onValueChange } />
     </Modal>

@@ -18,15 +18,20 @@
     .fail (data) =>
       log 'MakeOrderModal#makeOrder ajax fail', data
 
-  onMealValueChange: (value) ->
+  onMealValueChange: (value, enterPressed) ->
     @setState mealValue: value
+    enterPressed && @allowSubmit() && @makeOrder()
 
-  onOrderValueChange: (value) ->
+  onOrderValueChange: (value, enterPressed) ->
     @setState orderValue: value
+    enterPressed && @allowSubmit() && @makeOrder()
+
+  allowSubmit: ->
+    @state.orderValue != ''
 
   render: ->
     <Modal
-        id='make-order-modal' close={ @state.close } disableAction={ @state.orderValue == '' }
+        id='make-order-modal' close={ @state.close } disableAction={ !@allowSubmit() }
         title={ 'Make new order' } buttonText={ 'Order' } action={ @makeOrder } >
       <TextControl id='new-order' value={ @props.orderValue } label='New order' onChange={ @onOrderValueChange } />
       <TextControl id='add-meal' label='Add meal (optional)' onChange={ @onMealValueChange } />
