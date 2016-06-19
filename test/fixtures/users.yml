@@ -5,6 +5,7 @@ jack:
   image_url: 'jack/image/url'
 
 joe:
+  id: 2
   uid: '0002'
   name: 'Joe Black'
   image_url: 'joe/image/url'

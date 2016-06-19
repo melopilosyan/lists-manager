@@ -54,13 +54,16 @@
     order.meals = meals
     @props.updateOrders order
 
-  
+  onAddMealError: (error) ->
+    @setState error: error
+
   render: ->
     order = @props.order
     addMeal = @props.allowEdit && MO.Statuses.isOrdered(order) &&
                   @state.meals.filter((meal) -> meal.allowActions).length is 0
 
     <Modal id='show-order' title='Order details' >
+      { showError(@state.error) if @state.error }
       <dl className='dl-horizontal' >
         {[
           @row('Made against', order.name)
@@ -73,7 +76,7 @@
       <h2>
         <small>Meals</small>
         <div className='pull-right' >
-          { addMeal && <AddMeal orderId={ @props.order.id } addMeal={ @addMeal } /> }
+          { addMeal && <AddMeal orderId={ @props.order.id } addMeal={ @addMeal } onError={ @onAddMealError } /> }
         </div>
       </h2>
       { @mealsTable() }

@@ -65,14 +65,21 @@ class OrdersControllerTest < ActionController::TestCase
     end
 
     @controller = MealsController.new
+    post :create, meal: { name: @meal1, order_id: order_id }
+    assert_equal JSON.parse(@response.body)['status'], 'nok', 'Should not add meal to not Ordered order'
+
+    @controller = OrdersController.new
+    patch :update, id: order_id, order: {status: 'Ordered'}
+    assert_equal Order::Status::ORDERED, (Order.find_by(id: order_id).status rescue Order::Status::DELIVERED),
+      'Order\'s update status should update order\'s status(second try)'
 
     # Add/update meal
+    @controller = MealsController.new
     assert_difference('Meal.count', 1, 'Meal\'s create should create new meal') do
       post :create, meal: { name: @meal1, order_id: order_id }
 
-      assert_response :success, 'Meals create should succeed'
-
       response = JSON.parse @response.body
+
       assert !response['meal'].nil?, 'Meal\'s create should return meal\'s JSON'
       assert_equal @meal1, (response['meal']['name'] rescue ''), 'Meal\'s create should return created meal'
       assert_equal @joe.name, (response['meal']['creator']['name'] rescue ''),
@@ -82,16 +89,12 @@ class OrdersControllerTest < ActionController::TestCase
       # Update name
       patch :update, id: meal_id, meal: {name: @meal2}
 
-      assert_response :success, 'Meal\'s update name should succeed'
       assert_equal @meal2, (Meal.find_by(id: meal_id).name rescue @meal1),
         'Meal\'s update name should update meal\'s name'
-
-      post :create, meal: { name: @meal2, order_id: order_id }
     end
 
     post :create, meal: { name: @meal1, order_id: order_id }
-    response = JSON.parse @response.body
-    assert_equal response['status'], 'nok', 'Should not create to meals for a user under the same order'
+    assert_equal JSON.parse(@response.body)['status'], 'nok', 'Should not create to meals for a user under the same order'
 
     assert_difference('Meal.count', -1, 'Meals\'s delete should delete the meal') do
       delete :destroy, id: meal_id

@@ -22,11 +22,14 @@ EditModal = React.createClass
         if data.status == 'ok'
           @setState close: true
           @props.onUpdate id, newValue
+        else
+          @setState error: data.msg
 
   render: ->
     title = 'Edit ' + @props.type
     <Modal id='edit-modal' close={ @state.close } title={ title }
            action={ @onEdit } buttonText='Update' disableAction={ @state.value == '' } >
+      {  showError(@state.error) if @state.error }
       <TextControl id='text-edit' label={ title } value={ @props.item.name } onChange={ @onValueChange } />
     </Modal>
 
@@ -48,12 +51,16 @@ editIconFor = (type, item, editUpdate) ->
       url: MOR[@props.type](id)
       type: 'DELETE'
       success: (data) =>
-        @setState close: true
-        @props.onUpdate(id)
+        if data.status == 'ok'
+          @setState close: true
+          @props.onUpdate(id)
+        else
+          @setState error: data.msg
 
   render: ->
     <Modal id='delete-modal' close={ @state.close }
         title={ 'Delete ' + @props.item.name + ' ' + @props.type } action={ @onDelete } buttonText='Delete' >
+      { showError(@state.error) if @state.error }
       <p>Normally here had to be a question <code>Are you sure?</code> or something like that</p>
       <p>But I'm sure you know what you are doing</p>
     </Modal>

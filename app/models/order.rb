@@ -40,5 +40,23 @@ class Order < ActiveRecord::Base
   def created_at_humanize
     self.created_at.to_formatted_s(:short)
   end
+
+  def not_ordered?
+    self.status != Status::ORDERED
+  end
+
+  def update_with attrs, not_ordered_msg
+    attrs || (return nil)
+
+    (status = attrs[:status]) && self.status == Status::FINALIZED && (return 'Cant\' update status, Order is finalized.')
+
+    !status && not_ordered? && (return not_ordered_msg)
+
+    status && (self.status = Order::Status.from_string(attrs[:status]))
+    attrs[:name] && (self.name = attrs[:name])
+
+    # return false if save succeed otherwise error message
+    !save && errors.full_messages.first
+  end
 end
 

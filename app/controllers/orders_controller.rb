@@ -17,36 +17,25 @@ class OrdersController < ApplicationController
   # POST /orders
   def create
     order = current_user.orders.new(order_params)
+    order.save || render_nok(order.errors.full_massages.first) && return
 
-    if order.save
-      meal = params[:order].fetch :meal, ''
-      meal.empty? || order.meals.create(name: meal, user_id: current_user.id)
-      @orders = [order]
-      render 'jsons/orders'
-    else
-      render json: { status: :nok, msg: order.errors }
-    end
+    meal = params[:order].fetch :meal, ''
+    meal.empty? || order.meals.create(name: meal, user_id: current_user.id) && return
+    @orders = [order]
+    render 'jsons/orders'
   end
 
   # PATCH/PUT /orders/1
   def update
-    json = {status: :nok, msg: 'Wrong params'}
-    if params.key? :order
-      if params[:order].key? :name
-        pair = {name: params[:order][:name]}
-      elsif params[:order].key? :status
-        pair = {status: Order::Status.from_string(params[:order][:status])}
-      end
-      order = Order.find_by(id: params[:id])
-      order && order.update(pair) ? json[:status] = :ok : json[:msg] = order.errors
-    end
-    render json: json
+    order = current_user.orders.find_by_id params[:id]
+    order || render_nok && return
+    render_nok order.update_with params[:order], "Can't update name. #{ORDER_CHANGE_MSG}"
   end
 
   # DELETE /orders/1
   def destroy
-    Order.find_by(id: params[:id]).delete rescue 1
-    head :ok
+    current_user.orders.find_by_id(params[:id]).delete rescue 1
+    render_nok false
   end
 
  private

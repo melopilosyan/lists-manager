@@ -7,4 +7,9 @@ class Meal < ActiveRecord::Base
   def created_at_humanize
     self.created_at.to_formatted_s(:short)
   end
+
+  def update_name name
+    self.name = name
+    !save && errors.full_massages.first
+  end
 end
