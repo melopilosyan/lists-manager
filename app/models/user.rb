@@ -1,6 +1,6 @@
 class User < ActiveRecord::Base
-  has_many :orders
-  has_many :meals
+  has_many :orders, dependent: :delete_all
+  has_many :meals, dependent: :delete_all
 
   validates :uid, presence: true
 

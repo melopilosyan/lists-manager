@@ -1,6 +1,6 @@
 class Order < ActiveRecord::Base
   belongs_to :user
-  has_many :meals
+  has_many :meals, dependent: :delete_all
 
   validates :name, :user_id, presence: true
 
