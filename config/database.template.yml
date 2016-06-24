@@ -1,22 +1,20 @@
 default: &default
   adapter: postgresql
   encoding: unicode
-  pool: 5
-  username: postgres
-  password: admin
+  pool: 10
+  username: You username
+  password: Your password
 
 development:
   <<: *default
-  database: meal_orders_development
+  database: lists_manager_development
 
 test:
   <<: *default
-  database: meal_orders_test
+  database: lists_manager_test
 
 production:
-  database: meal_orders_production
-  adapter: postgresql
-  encoding: unicode
-  pool: 5
+  <<: *default
+  database: lists_manager_production
   username: postgres #<%= ENV['DATABASE_USERNAME'] %>
   password: admin #<%= ENV['DATABASE_PASSWORD'] %>
