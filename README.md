@@ -1,53 +1,41 @@
-# Meal Orders
+# Lists Manage
+
+This is SPA built with Ruby on Rails and ReactJS.
+
+Initially the idea was to create kinda platform for making orders. Which would allow each registered user(can login with Facebook) to add a meal to the active order. Thereby collect meals list to make a real order from restaurant or somewhere else for a group of people: colleagues, classmates, etc.
+
+Currently a person who added an item becomes admin for it. Only he/she can update/remove the item.
+It's separates active and archived orders which have states determining whether to modify it(update name, add/remove meal) or not.
 
 
 #### System dependencies
 Ruby 2.3.1
-
 Rials 4.2.6
-
 PostgreSQL database
 
 
 #### Configuration
-Copy `.env-template` to `.env` in the same directory and save with necessary information. Keep this format:
-
+Copy `.env-template` to `.env` and save with necessary information. Keep this format:
 `SOME_KEY=appropriatevalue `
-
-Create and configure your FaceBook app with steps below.
-* Navigate to developers.facebook.com.
-* Click “Add new app” under “My Apps” menu item.
-* Click “Website” in the dialog.
-* Click “Skip and Create ID”.
-* Enter a name for your app and choose a category, click “Create”.
-* You will be redirected to the app’s page. Click “Show” next to the “App Secret” and enter your password to reveal the key. Copy and paste those keys into your initializer file.
-* Open “Settings” section.
-* Click “Add Platform” and choose “Website”.
-* Fill in “Site URL” (“http://localhost:3000” for local machine) and “App Domains” (must be derived from the Site URL or Mobile Site URL).
-* Fill in “Contact E-mail” (it is required to make app active) and click “Save Changes”
-* Navigate to the “Status & Review” section and set the “Do you want to make this app and all its live features available to the general public?” switch to “Yes”.
-
-#### How to run the test suite
-Simply run `rake test` from application root or subdirectories.
+Copy `config/database.yml` to `config/database.template.yml` providing your postgres username and password.
 
 
 #### Deployment instructions
-No specific steps.
+```
+bundle install && rake db:create db:migrate && rails s
+```
 
-`bundle install && rake db:create db:migrate && rails s`
+##### Production
+Currently the application is under major constructions.
+If you want to run it please do it in development mode.
 
-###### Production
-Make sure you have postgres installed.
 
-Create and migrate production database: `RAILS_ENV=production rake db:create db:migrate`
+#### How to run the test suite
+```
+rake test
+```
 
-Choose your WEB server and configure it to look up for Rails root directory.
 
-Install environment variables from `.env-template` file.
-
-Run `RAILS_ENV=production rake secret` and add SECRETE_KEY_BASE environment variable with the commant output as its value.
-
-Compile assets: `rake assets:precompile`
-
-That's it from Rails side. Check out your WEB server documentation or tutorials how to coonect it with Rails.
+#### Author
+[Meliq Pilosyan](https://github.com/melopilosyan)
 
