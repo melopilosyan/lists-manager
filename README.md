@@ -6,7 +6,7 @@ Ruby 2.3.1
 
 Rials 4.2.6
 
-PostgreSQL database for production deployment
+PostgreSQL database
 
 
 #### Configuration
