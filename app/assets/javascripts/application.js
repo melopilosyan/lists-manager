@@ -13,17 +13,17 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
-//= require js-routes
 //= require bootstrap
 //= require react
 //= require react_ujs
+//= require js-routes
+//= require lists_manager
 //= require_tree ./components
 
 
-window.log = function() {
-  // Comment out next line to turn off all logs
+window.log = function () {
   var args = Array.prototype.slice.call(arguments);
   args.push(+new Date());
   console.log.apply(console, args)
-}
+};
 

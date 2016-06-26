@@ -1,63 +1,58 @@
 # @cjsx React.DOM
 
-@ChangeStatusModal = React.createClass
+@ChangeStateModal = React.createClass
   getInitialState: ->
     close: false
-    status: @props.order.status
+    state: @props.list.state
 
-  changeStatus: ->
-    id = @props.order.id
+  changeState: ->
+    id = @props.list.id
     $.ajax
-      url: MOR.order(id)
+      url: LM.R.list(id)
       type: 'PUT'
-      data: {order: {status: @state.status}}
+      data: {list: {state: @state.state}}
       dataType: 'json'
       success: (data) =>
         if data.status == 'ok'
           @setState close: true
-          @props.updateChange(id, @state.status, true)
+          @props.updateChange(id, @state.state, true)
+        else
+          @setState error: data.msg
 
   onValueChange: (e) ->
     e.preventDefault()
-    @setState status: e.target.value
-
-  hintClass: ->
-    switch @state.status
-      when MO.Statuses.Ordered then 'bg-info'
-      when MO.Statuses.Delivered then 'bg-warning'
-      when MO.Statuses.Finalized then 'bg-danger'
+    @setState state: e.target.value
 
   hint: ->
-    <p className={ 'status-hint ' + @hintClass() } >
-      { switch @state.status
-          when MO.Statuses.Ordered
-            'Fully active state. Allows to edit, add & edit meals.'
-          when MO.Statuses.Delivered
-            'No edits allowed. Change to Ordered to be able to.'
-          when MO.Statuses.Finalized
-            "The archived state. Can't be reverted back. Do you realy want this?"
-      }
-    </p>
+    switch @state.state
+      when LM.State.Open
+        showInfo 'Fully active state. Allows to update, add & edit items.'
+      when LM.State.Finalized
+        showWarning 'No edits allowed. Change to Open to be able to.'
+      when LM.State.Archived
+        showError "The archived state. Can't be reverted back. Do you realy want this?"
+
+  selectOptions: ->
+    for _, state of LM.State
+      <option key={ state } value={ state }>{ state }</option>
 
   render: ->
-    <Modal id='shange-status' buttonText='Change' close={ @state.close }
-          title={ 'Order from ' + @props.order.name } action={ @changeStatus } >
-      { @hint() }
+    <Modal id='shange-state' buttonText='Change' close={ @state.close }
+          title={ 'Change state of ' + @props.list.name } action={ @changeState } >
+      { @state.error && showError(@state.error) || @hint() }
       <br/>
       <div className='form-group' >
-        <label for='change-order-status'>Change status to</label>
-        <select id='change-order-status' className='form-control' value={ @state.status } onChange={ @onValueChange } >
-          <option value='Ordered'>Ordered</option>
-          <option value='Delivered'>Delivered</option>
-          <option value='Finalized'>Finalized</option>
+        <label for='change-list-state'>Change state</label>
+        <select id='change-list-state' className='form-control' value={ @state.state } onChange={ @onValueChange } >
+          { @selectOptions() }
         </select>
       </div>
     </Modal>
 
 
-renderModal = (order, updateChange) ->
-  ReactDOM.render <ChangeStatusModal order={ order } updateChange={ updateChange } />, MO.modalContainer
+renderModal = (list, updateChange) ->
+  ReactDOM.render <ChangeStateModal list={ list } updateChange={ updateChange } />, LM.Modal.container
 
-@changeStatusModalLink = (order, updateChange) ->
-  linkFor order.status, renderModal.bind(null, order, updateChange)
+@changeStateModalLink = (list, updateChange) ->
+  linkFor list.state, renderModal.bind(null, list, updateChange)
 

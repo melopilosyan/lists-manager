@@ -1,0 +1,23 @@
+
+window.LM || (window.LM = {});
+
+LM.State = {
+  Open:      'Open',
+  Finalized: 'Finalized',
+  Archived:  'Archived'
+};
+
+// Customize everything possible
+// LM.navbarTitle = <%#  %>
+
+for(var state in LM.State) {
+  (function (state) {
+    Object.defineProperty(Object.prototype, 'state' + state, {
+      __proto__: null,
+      value: function () {
+        return this.state == state
+      }
+    })
+  })(state)
+}
+

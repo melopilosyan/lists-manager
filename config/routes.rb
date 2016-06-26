@@ -2,13 +2,14 @@ Rails.application.routes.draw do
   root to: 'home#index'
 
   get 'auth/:provider/callback', to: 'sessions#create'
-  get 'auth/failure', to: redirect('/')
+  get 'auth/failure', to: redirect('/close')
   delete 'logout', to: 'sessions#destroy'
 
+  get 'close', to: 'home#close'
   get 'user_info', to: 'application#current_user_info'
 
-  resources :orders
-  resources :meals
+  resources :lists, only: [:index, :create, :update, :destroy]
+  resources :items, only: [:create, :update, :destroy]
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

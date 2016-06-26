@@ -1,5 +1,5 @@
 JsRoutes.setup do |config|
   config.compact = true
-  config.namespace = 'MOR'
+  config.namespace = 'LM.R'
   config.url_links = true
 end

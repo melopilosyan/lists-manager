@@ -1,8 +1,8 @@
-class Meal < ActiveRecord::Base
+class Item < ActiveRecord::Base
   belongs_to :user
-  belongs_to :order
+  belongs_to :list
 
-  validates :order_id, uniqueness: {scope: :user_id}, presence: true
+  validates :list_id, uniqueness: {scope: :user_id}, presence: true
 
   def created_at_humanize
     self.created_at.to_formatted_s(:short)

@@ -2,7 +2,9 @@
 
 @Link = React.createClass
   statics:
-    num: 0
+    num: 1
+    getKey: ->
+      'link-' + @num++
 
   onClick: (e) ->
     e.preventDefault()
@@ -23,11 +25,11 @@
     onClick = cls
     cls = ''
 
-  <Link key={ 'link-' + ++Link.num } cls={ cls } text={ text } onClick={ onClick } />
+  <Link key={ Link.getKey() } cls={ cls } text={ text } onClick={ onClick } />
 
 
 @iconLink = (onClick, cls) ->
-  <Link key={ 'link-' + ++Link.num } cls={ cls } onClick={ onClick } />
+  <Link key={ Link.getKey() } cls={ cls } onClick={ onClick } />
 
 @editIconLink = (onClick) ->
   iconLink onClick, 'fa fa-pencil-square-o'

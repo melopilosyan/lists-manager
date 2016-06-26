@@ -7,19 +7,13 @@
     reloadArchiveds: false
 
   componentWillMount: ->
-    window.__informLoggingIn__ = @onLoggingIn
     @requestUserInfo()
 
-    # Store some global values
-    window.MO =
-      modalContainer: document.getElementById('modal-container'),
-      editModalContainer: document.getElementById('edit-modal-container')
-      Statuses: statuses =
-        Ordered: 'Ordered'
-        Delivered: 'Delivered'
-        Finalized: 'Finalized'
-        isOrdered: (order) ->
-          order.status == @Ordered
+    window.__informLoggingIn__ = @onLoggingIn
+    window.LM || (window.LM = {})
+    window.LM.Modal =
+      container: document.getElementById('modal-container'),
+      editContainer: document.getElementById('edit-modal-container')
 
   onLoggingIn: ->
     @requestUserInfo()
@@ -31,15 +25,15 @@
     @setState reloadArchiveds: reload
 
   requestUserInfo: ->
-    $.getJSON MOR.user_info_url(), (user) =>
+    $.getJSON LM.R.user_info_url(), (user) =>
       @setState user: user
 
   render: ->
     <div>
       <Navbar user={ @state.user } onLogout={ @onLogout } />
       <div className='container'>
-        <OrdersContainer authenticated={ @state.user.authenticated } onHasFinalized={ @reloadArchiveds }/>
-        <OrdersContainer
+        <ListsContainer authenticated={ @state.user.authenticated } onHasFinalized={ @reloadArchiveds }/>
+        <ListsContainer
           type='archived'
           reload={ @state.reloadArchiveds }
           informReloaded={ @reloadArchiveds }

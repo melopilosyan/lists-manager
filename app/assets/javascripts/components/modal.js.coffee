@@ -3,7 +3,7 @@
 @Modal = React.createClass
   getDefaultProps: ->
     id:         'modal'
-    title:      'Default Title'
+    title:      'Title'
     close:      false
     action:     false
     buttonText: 'OK'

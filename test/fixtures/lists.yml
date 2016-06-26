@@ -1,4 +1,4 @@
-order:
+list:
   id: 1
-  name: Order
+  name: List
   user_id: 1

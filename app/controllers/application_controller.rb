@@ -3,17 +3,15 @@ class ApplicationController < ActionController::Base
 
   before_action :init_response_json
 
-  ORDER_CHANGE_MSG = 'Order\'s status is changed. Please reload the section.'
+  LIST_CHANGED_MSG = 'List\'s status is changed. Please reload the section.'
 
   def current_user_info
-    user_info = { authenticated: false }
-    current_user && (user_info = current_user.info)
-    render json: user_info
+    render json: current_user && (user_info = current_user.info) || { authenticated: false }
   end
 
  private
   def authenticate_user!
-    current_user || render(json: {status: :nok, msg: 'Please login' })
+    current_user || render_nok('Please login')
   end
 
   def current_user

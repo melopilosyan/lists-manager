@@ -3,7 +3,7 @@
 @Navbar = React.createClass
   loggingOut: ->
     $.ajax
-      url: MOR.logout_url()
+      url: LM.R.logout_url()
       type: 'DELETE'
       success: @props.onLogout
 
@@ -20,7 +20,7 @@
   render: ->
     <nav className="navbar navbar-default">
       <div className="container">
-        <div className="navbar-header">{ linkFor('Meal Orders', 'navbar-brand') }</div>
+        <div className="navbar-header">{ linkFor(LM.navbarTitle || 'List Manager', 'navbar-brand') }</div>
         <div id="navbar">
           <ul className="nav navbar-nav navbar-right">
             { @props.user.authenticated && @loggedInMode() || @loggedOutMode() }

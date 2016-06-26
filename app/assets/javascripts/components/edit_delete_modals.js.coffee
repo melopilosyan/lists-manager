@@ -20,7 +20,7 @@ EditModal = React.createClass
     data[@props.type] = { name: newValue }
 
     $.ajax
-      url: MOR[@props.type](id)
+      url: LM.R[@props.type](id)
       type: 'PUT'
       data: data
       success: (data) =>
@@ -39,7 +39,7 @@ EditModal = React.createClass
     </Modal>
 
 renderEditModal = (type, item, editUpdate) ->
-  ReactDOM.render <EditModal type={ type } item={ item } onUpdate={ editUpdate } />, MO.editModalContainer
+  ReactDOM.render <EditModal type={ type } item={ item } onUpdate={ editUpdate } />, LM.Modal.editContainer
 
 editIconFor = (type, item, editUpdate) ->
   editIconLink renderEditModal.bind(null, type, item, editUpdate)
@@ -53,7 +53,7 @@ editIconFor = (type, item, editUpdate) ->
   onDelete: ->
     id = @props.item.id
     $.ajax
-      url: MOR[@props.type](id)
+      url: LM.R[@props.type](id)
       type: 'DELETE'
       success: (data) =>
         if data.status == 'ok'
@@ -71,7 +71,7 @@ editIconFor = (type, item, editUpdate) ->
     </Modal>
 
 renderDeleteModal = (type, item, deleteUpdate) ->
-  ReactDOM.render <DeleteModal type={ type } item={ item } onUpdate={ deleteUpdate } />, MO.editModalContainer
+  ReactDOM.render <DeleteModal type={ type } item={ item } onUpdate={ deleteUpdate } />, LM.Modal.editContainer
 
 deleteIconFor = (type, item, deleteUpdate) ->
   deleteIconLink renderDeleteModal.bind(null, type, item, deleteUpdate)
@@ -81,7 +81,7 @@ deleteIconFor = (type, item, deleteUpdate) ->
 # Show Edit and Delete icons
 @actionIconsFor = (item, deleteUpdate, editUpdate) ->
   if item.allowActions
-    type = item.meals && 'order' || 'meal'
+    type = item.items && 'list' || 'item'
     <span>
       { editUpdate && editIconFor type, item, editUpdate }
       <i className='space'></i>
