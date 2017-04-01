@@ -35,7 +35,7 @@
   render: ->
     label = @props.id + '-m-label'
 
-    <div className="modal fade" id={ @props.id + '-itself' } tabindex="-1" role="dialog" aria-labelledby={ label } >
+    <div className="modal fade" id={ @props.id + '-itself' } tabIndex="-1" role="dialog" aria-labelledby={ label } >
       <div className="modal-dialog" role="document" >
         <div className="modal-content" >
           <div className="modal-header" >

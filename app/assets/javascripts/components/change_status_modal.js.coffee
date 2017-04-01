@@ -42,7 +42,7 @@
       { @state.error && showError(@state.error) || @hint() }
       <br/>
       <div className='form-group' >
-        <label for='change-list-state'>Change state</label>
+        <label htmlFor='change-list-state'>Change state</label>
         <select id='change-list-state' className='form-control' value={ @state.state } onChange={ @onValueChange } >
           { @selectOptions() }
         </select>

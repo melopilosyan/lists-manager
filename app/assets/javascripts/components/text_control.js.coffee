@@ -22,7 +22,7 @@
 
   render: ->
     <div className="form-group" >
-      <label className={ @props.srOnly && 'sr-only' || '' } for={ @props.id } >{ @props.label }</label>
+      <label className={ @props.srOnly && 'sr-only' || '' } htmlFor={ @props.id } >{ @props.label }</label>
       <input onChange={ @onChange } onKeyPress={ @onKeyPress } value={ @state.value } type="text" className="form-control" id={ @props.id } placeholder={ @props.label } />
     </div>
 

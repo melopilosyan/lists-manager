@@ -8,7 +8,7 @@
       success: @props.onLogout
 
   loggingIn: ->
-    window.open('/auth/facebook', '', 'width=500,height=500')
+    window.open('/auth/facebook', '', 'width=500,height=320')
     
   loggedOutMode: ->
     <li>{ linkFor('Login with Facebook', @loggingIn) }</li>
