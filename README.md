@@ -25,11 +25,6 @@ Copy `config/database.yml` to `config/database.template.yml` providing your post
 bundle install && rake db:create db:migrate && rails s
 ```
 
-##### Production
-Currently the application is under major constructions.
-If you want to run it please do it in development mode.
-
-
 #### How to run the test suite
 ```
 rake test
