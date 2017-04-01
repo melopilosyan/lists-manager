@@ -9,15 +9,15 @@ It's separates active and archived orders which have states determining whether 
 
 
 #### System dependencies
-Ruby 2.3.1
-Rials 4.2.6
-PostgreSQL database
+- Ruby 2.3.1
+- Rials 4.2.6
+- PostgreSQL database
 
 
 #### Configuration
 Copy `.env-template` to `.env` and save with necessary information. Keep this format:
 `SOME_KEY=appropriatevalue `
-Copy `config/database.yml` to `config/database.template.yml` providing your postgres username and password.
+Copy `config/database.template.yml` to `config/database.yml` providing your postgres username and password.
 
 
 #### Deployment instructions
