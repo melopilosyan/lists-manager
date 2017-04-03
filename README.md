@@ -1,4 +1,4 @@
-# Lists Manage
+# Lists Manager
 
 This is SPA built with Ruby on Rails and ReactJS.
 
